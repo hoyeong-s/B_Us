@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ssafy.third.bus">
 
+    <uses-permission android:name="android.permission.INTERNET" />  <!-- 인터넷 권한 선언  -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,13 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bus">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".LoginActivity"
+            android:exported="false" />
+            <!--  intent filter의 위치변경은 가장 처음 실행될 파일을 설정하는것  -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        <activity
+            android:name=".RegisterBus"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
         </activity>
     </application>
 
