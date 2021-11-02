@@ -1,9 +1,8 @@
-package ssafy.third.bus;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+package ssafy.third.bus.function;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,46 +13,35 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+
 import java.util.ArrayList;
 
-public class MainActivity1 extends AppCompatActivity {
+import ssafy.third.bus.Home;
+import ssafy.third.bus.R;
 
+public class STT {
     Intent intent;
     SpeechRecognizer mRecognizer;
-    Button sttBtn;
-    TextView textView;
+    final Context context;
     final int PERMISSION = 1;
+    static StringBuilder sb = new StringBuilder();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main1);
-
-        if ( Build.VERSION.SDK_INT >= 23 ){
-            // 퍼미션 체크
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
-                    Manifest.permission.RECORD_AUDIO},PERMISSION);
-        }
-
-        textView = (TextView)findViewById(R.id.sttResult);
-        sttBtn = (Button) findViewById(R.id.sttStart);
-
+    public STT(Activity activity) {
+        this.context = Home.getAppContext();
         intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,getPackageName());
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,context.getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
 
-        sttBtn.setOnClickListener(v -> {
-            mRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
-            mRecognizer.setRecognitionListener(listener);
-            mRecognizer.startListening(intent);
-        });
-
+        mRecognizer=SpeechRecognizer.createSpeechRecognizer(context);
+        mRecognizer.setRecognitionListener(listener);
+        mRecognizer.startListening(intent);
     }
 
     private RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
-            Toast.makeText(getApplicationContext(),"음성인식을 시작합니다.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), "음성인식을 시작합니다.",Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -105,7 +93,7 @@ public class MainActivity1 extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), "에러가 발생하였습니다. : " + message,Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -113,9 +101,8 @@ public class MainActivity1 extends AppCompatActivity {
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
-            for(int i = 0; i < matches.size() ; i++){
-                textView.setText(matches.get(i));
+            for(int i = 0; i < matches.size() ; i++) {
+                sb.append(matches.get(i));
             }
         }
 
