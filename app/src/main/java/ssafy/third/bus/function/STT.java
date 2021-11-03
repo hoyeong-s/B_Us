@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,6 @@ public class STT {
 
         mRecognizer=SpeechRecognizer.createSpeechRecognizer(context);
         mRecognizer.setRecognitionListener(listener);
-        mRecognizer.startListening(intent);
     }
 
     private RecognitionListener listener = new RecognitionListener() {
@@ -92,18 +92,20 @@ public class STT {
                     message = "알 수 없는 오류임";
                     break;
             }
-
             Toast.makeText(context.getApplicationContext(), "에러가 발생하였습니다. : " + message,Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onResults(Bundle results) {
+
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             for(int i = 0; i < matches.size() ; i++) {
                 sb.append(matches.get(i));
             }
+            Log.d("d",sb.toString());
+            Toast.makeText(context.getApplicationContext(), sb.toString(),Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -112,4 +114,8 @@ public class STT {
         @Override
         public void onEvent(int eventType, Bundle params) {}
     };
+
+    public void startListening() {
+        mRecognizer.startListening(intent);
+    }
 }
