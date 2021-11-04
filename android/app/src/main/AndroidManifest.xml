@@ -12,21 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bus">
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-            <!--  intent filter의 위치변경은 가장 처음 실행될 파일을 설정하는것  -->
+            android:name=".Home"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        <activity
-            android:name=".RegisterBus"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+                   </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 </manifest>
