@@ -72,7 +72,6 @@ public class Home extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context.getApplicationContext(), "커맨드 시작",Toast.LENGTH_SHORT).show();
                         command.getCommand();
                     }
                 },3000);
