@@ -80,12 +80,13 @@ public class Command {
                 }, 6500);
                 //TODO
                 //버스가 오지 않는 경우
+                //해당 버스는 현재 버스정류장에 오지 않습니다 버스 번호를 다시 말해주세요
             }
             else if(cnt==2){
-                tts.speakOut(bus_num+"번 버스를 등록하였습니다");
-                cnt = 0;
                 //TODO
                 //버스 등록 메소드
+                tts.speakOut(bus_num+"번 버스를 등록하였습니다");
+                cnt = 0;
             }
         }
         else if(command.contains("아니오") || command.contains("아니") || command.contains("아니요")){
