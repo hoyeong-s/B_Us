@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/drawable/icons8_home.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/drawable/img.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/activity_alarm.xml" value="0.264" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/activity_buslist.xml" value="0.23842592592592593" />
         <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/activity_main1.xml" value="0.1" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/buslist_layout.xml" value="0.264" />
+        <entry key="..\:/Users/multicampus/AndroidStudioProjects/S05P31A504/app/src/main/res/layout/fragment_blank.xml" value="0.2" />
         <entry key="..\:/Users/multicampus/AndroidStudioProjects/bus/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
       </map>
     </option>

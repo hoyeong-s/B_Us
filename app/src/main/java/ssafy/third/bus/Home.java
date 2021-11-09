@@ -3,6 +3,7 @@ package ssafy.third.bus;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +12,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import ssafy.third.bus.function.Command;
 import ssafy.third.bus.function.STT;
@@ -25,7 +31,9 @@ public class Home extends AppCompatActivity {
     private STT stt;
     private Command command;
     private Button station_info;
+    private Button register;
     private Button register_speak;
+    private Button alarm;
     private TextView station;
 
     @Override
@@ -36,7 +44,9 @@ public class Home extends AppCompatActivity {
 
         tts = new TTS();
         station = findViewById(R.id.station);
+        register = findViewById(R.id.register);
         register_speak = findViewById(R.id.register_speak);
+        alarm = findViewById(R.id.alarm);
         command = new Command(mainActivity);
 
         final int PERMISSION = 1;
@@ -53,7 +63,7 @@ public class Home extends AppCompatActivity {
         station.setText(s+"입니다.");
         station_info = findViewById(R.id.station_info);
 
-
+        //정류장 정보 버튼
         station_info.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO
@@ -64,6 +74,15 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        // 버스 목록 버튼
+        register.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getAppContext(),BusList.class);
+                startActivity(intent);
+            }
+        });
+
+        // 음성 인식 버튼
         Handler handler = new Handler();
         register_speak.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -77,9 +96,18 @@ public class Home extends AppCompatActivity {
                 },3000);
             }
         });
+
+        // 버스 목록 버튼
+        alarm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getAppContext(),Alarm.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public static Context getAppContext(){
         return Home.context;
     }
+
 }
