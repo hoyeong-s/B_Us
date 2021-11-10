@@ -4,6 +4,7 @@ import static ssafy.third.bus.Home.getAppContext;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -74,7 +75,16 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
     @Override
     public void onDeleteBtnClick(int position) {
         list.remove(position);
-        adapter.notifyItemRemoved(position);
-        onchanged();
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyItemRemoved(position);
+                onchanged();
+            }
+        },2000);
+
     }
 }

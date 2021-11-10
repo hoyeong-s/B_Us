@@ -4,6 +4,7 @@ import static ssafy.third.bus.Home.getAppContext;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
     BusList_Adapter adapter;
     TTS tts = new TTS();
     FloatingActionButton fab;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,15 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
 
     @Override
     public void onBtnClick() {
-        Intent intent = new Intent(getAppContext(),Alarm.class);
-        startActivity(intent);
+        Handler handler = new Handler();
+        
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getAppContext(),Alarm.class);
+                startActivity(intent);
+            }
+        },2500);
+        
     }
 }
