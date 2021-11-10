@@ -14,6 +14,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:focusable="true"
         >
         <TextView
             android:id="@+id/list_text"
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="전체 버스 조회 및 등록 "
             android:textSize="80px"
+            android:focusable="false"
             />
         <TextView
             android:id="@+id/list1_text"
@@ -30,8 +32,9 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="등록하시려면 선택해주세요"
+            android:text="등록하시려면 아래 버튼을 선택해주세요"
             android:textSize="40px"
+            android:focusable="false"
             />
     </LinearLayout>
 
