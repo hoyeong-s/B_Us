@@ -33,18 +33,6 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
         list.add("102번");
         list.add("103번");
         list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
-        list.add("103번");
 
 
 

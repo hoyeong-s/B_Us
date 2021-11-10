@@ -36,6 +36,10 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
         list = new ArrayList<>();
         list.add("100번");
         list.add("101번");
+        list.add("100번");
+        list.add("101번");
+        list.add("100번");
+
 
         adapter = new Alarm_Adapter(list,this);
 

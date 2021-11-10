@@ -38,11 +38,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="3"
+        android:layout_weight="7"
         android:gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constrainedHeight="true"
+        />
 
     <TextView
         android:id="@+id/empty_view"
@@ -68,6 +70,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_margin="16dp"
             android:src="@drawable/icon_home"
+            android:contentDescription="@string/home"
             app:fabSize="normal" />
     </LinearLayout>
 
