@@ -1,7 +1,7 @@
 package com.ssafy.bus.service;
 
 import com.ssafy.bus.api.BusApiClient;
-import com.ssafy.bus.dto.BusResponseDto;
+import com.ssafy.bus.dto.response.BusResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,8 @@ package com.ssafy.bus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.ssafy.bus.dto.BusResponseDto;
+import com.ssafy.bus.dto.response.BusResponseDto;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -17,10 +18,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.ssafy.bus.common.ManageXML.*;
 
 @RestController
 @RequestMapping("/api")
@@ -28,36 +28,18 @@ import java.util.Map;
 public class OdsayController {
 
     @RequestMapping(value = "/stationInfo/{stationName}", method = RequestMethod.GET)
-    public void getStationInfo(@PathVariable Object stationName) throws IOException {
-        String urlStr =
-                "http://ws.bus.go.kr/api/rest/stationinfo/getStationByName"
-                        + "?serviceKey=Cd1Kw21w%2FOpUmlWaO%2FwpyF47QEYq76243PN57pJNwTFQ%2BKkOsSLxzta%2FjG8oLag%2FAVdYt6DS9YTFwVi85KJabg%3D%3D"
-                        + "&stSrch=" + stationName;
-        URL url = new URL(urlStr);
-        BufferedReader bf;
-        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+    public void getStationInfo(@PathVariable String stationName) throws IOException {
+        String result = getFullUri("http://ws.bus.go.kr/api/rest/stationinfo/getStationByName", "stSrch", stationName);
+        List itemList = getItemListFromXML(result);
 
-        String result = bf.readLine();
-        List list = xmlToList(result);
-
-        list.stream().forEach(li -> System.out.println("li = " + li));
+        itemList.stream().forEach(li -> System.out.println("li = " + li));
     }
 
     @ApiOperation(value = "정류장에 오는 모든 버스를 조회하는 함수입니다. 추가로 시간을 반환해줍니다. 인자는 stationId 입니다")
-    @RequestMapping(value = "/busInfo/{stationId}", method = RequestMethod.GET)
-    public ResponseEntity<List<BusResponseDto>> getBusInfo(@PathVariable int stationId) throws IOException {
-        String urlStr =
-                "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid"
-                        + "?serviceKey=Cd1Kw21w%2FOpUmlWaO%2FwpyF47QEYq76243PN57pJNwTFQ%2BKkOsSLxzta%2FjG8oLag%2FAVdYt6DS9YTFwVi85KJabg%3D%3D"
-                        + "&arsId=" + stationId;
-        URL url = new URL(urlStr);
-
-        System.out.println("url.toString() = " + url.toString());
-        BufferedReader bf;
-        bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-
-        String result = bf.readLine();
-        List<Map> itemList = xmlToList(result);
+    @RequestMapping(value = "/busInfo/{arsId}", method = RequestMethod.GET)
+    public ResponseEntity<List<BusResponseDto>> getBusInfo(@PathVariable int arsId) throws IOException {
+        String result = getFullUri("http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid", "arsId",arsId);
+        List<Map> itemList = getItemListFromXML(result);
         System.out.println("itemList = " + itemList);
 
         List<BusResponseDto> busResponseDtos = new ArrayList<>();
@@ -67,32 +49,34 @@ public class OdsayController {
                             .busNo(item.get("rtNm").toString())
                             .remainingTime(changeRemainingTime(item.get("arrmsgSec1").toString()))
                             .busRouteId(item.get("busRouteId").toString())
+                            .staOrd(item.get("staOrd").toString())
+                            .vehId1(item.get("vehId1").toString())
                             .build();
                     busResponseDtos.add(dto);
                 }
         );
+        busResponseDtos.sort(new Comparator<BusResponseDto>() {
+            @Override
+            public int compare(BusResponseDto o1, BusResponseDto o2) {
 
+                String busNo1 = o1.getBusNo();
+                String busNo2 = o2.getBusNo();
+                int i = busNo1.compareTo(busNo2);
+
+                if (i == 0) return 0;
+                else if (i > 0) return 1;
+                else return -1;
+            }
+        });
         return ResponseEntity.ok(busResponseDtos);
     }
 
-    public List xmlToList(String str) throws IOException {
-        String xml = str;
-        JSONObject jObject = XML.toJSONObject(xml);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        Object json = mapper.readValue(jObject.toString(), Object.class);
-        String output = mapper.writeValueAsString(json);
-        System.out.println("output = " + output);
-//        System.out.println("output.getClass().getName() = " + output.getClass().getName());
 
-        HashMap<String, Object> jsonMap = new ObjectMapper().readValue(output, HashMap.class);
-        HashMap<String, Object> serviceResult = (HashMap<String, Object>) jsonMap.get("ServiceResult");
-        HashMap<String, Object> msgBody = (HashMap<String, Object>) serviceResult.get("msgBody");
-        List itemList = (List) msgBody.get("itemList");
-//        System.out.println("itemList = " + itemList);
 
-        return itemList;
-    }
+    @ApiOperation(value = "특정 루트를 운전하는 버스의 위치를 알아보는 함수입니다. 인자는 ")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+
+
 
     private String changeRemainingTime(String time) {
 
@@ -109,5 +93,4 @@ public class OdsayController {
         String changedTime = time.substring(0, index);
         return changedTime+"분 뒤 도착";
     }
-
 }

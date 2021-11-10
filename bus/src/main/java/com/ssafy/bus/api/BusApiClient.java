@@ -1,7 +1,7 @@
 package com.ssafy.bus.api;
 
 
-import com.ssafy.bus.dto.BusResponseDto;
+import com.ssafy.bus.dto.response.BusResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
