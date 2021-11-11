@@ -35,4 +35,18 @@ public class WaitingService {
         List<Waiting> result = waitingRepository.findByClientId(clientId);
         return result;
     }
+
+    public void save(Waiting waiting1) {
+        waitingRepository.save(waiting1);
+    }
+
+    public Waiting findWaitingByClientIdAndBusNo(String clientId, String busNo) {
+        return waitingRepository.findByClientIdAndBusNo(clientId, busNo);
+
+    }
+
+    public void delete(Waiting waitingByClientIdAndBusNo) {
+        waitingRepository.delete(waitingByClientIdAndBusNo);
+        return;
+    }
 }
