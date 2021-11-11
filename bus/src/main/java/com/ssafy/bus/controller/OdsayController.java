@@ -72,25 +72,4 @@ public class OdsayController {
     }
 
 
-
-    @ApiOperation(value = "특정 루트를 운전하는 버스의 위치를 알아보는 함수입니다. 인자는 ")
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-
-
-
-    private String changeRemainingTime(String time) {
-
-        if (time.equals("곧 도착")) {
-            return time;
-        }
-
-        int index = time.indexOf("분");
-
-        if (index == -1) {
-            return "도착 정보 없음";
-        }
-
-        String changedTime = time.substring(0, index);
-        return changedTime+"분 뒤 도착";
-    }
 }
