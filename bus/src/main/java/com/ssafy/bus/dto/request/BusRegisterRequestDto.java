@@ -20,7 +20,7 @@ public class BusRegisterRequestDto {
     @ApiModelProperty(value = "탑승할 정류장의 순서 staOrd", example = "67")
     private int staOrd;
 
-    @ApiModelProperty(value = "탑승할 버스의 번호", example = "540")
+    @ApiModelProperty(value = "탑승할 버스의 번호", example = "M5333안양")
     private String busNo;
 
 }
