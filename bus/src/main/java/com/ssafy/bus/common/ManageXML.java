@@ -72,4 +72,21 @@ public class ManageXML {
         String result = bf.readLine();
         return result;
     }
+
+
+    public static String changeRemainingTime(String time) {
+
+        if (time.equals("곧 도착")) {
+            return time;
+        }
+
+        int index = time.indexOf("분");
+
+        if (index == -1) {
+            return "도착 정보 없음";
+        }
+
+        String changedTime = time.substring(0, index);
+        return changedTime+"분 뒤 도착";
+    }
 }
