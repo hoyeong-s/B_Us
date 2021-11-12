@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ssafy.bus.common.ManageXML.getFullUri;
-import static com.ssafy.bus.common.ManageXML.getItemFromXML;
+import static com.ssafy.bus.common.ManageXML.*;
 
 @RestController
 @RequestMapping(value = "/api/bus")
@@ -27,28 +26,53 @@ public class BusController {
     private final WaitingService waitingService;
 
 
-    @ApiOperation(value = "차량 고유ID(vehId1)를 이용해서 다음정류장에 승객이 있는지 True, False // 앞 뒤 현재 정류장 이름이 무엇인지")
-    @RequestMapping(value = "/{vehId}", method = RequestMethod.GET)
-    public ResponseEntity checkBusLocation(@PathVariable int vehId) throws IOException {
+    @ApiOperation(value = "차량 고유ID(vehId1)와 루트아이디(BusRouteId) 를 이용해서 다음정류장에 승객이 있는지 True, False // 앞 뒤 현재 정류장 이름이 무엇인지")
+    @RequestMapping(value = "/{vehId}/{busRouteId}", method = RequestMethod.GET)
+    public ResponseEntity checkBusLocation(@PathVariable int vehId, @PathVariable int busRouteId) throws IOException {
 
         Map<String, Object> result = new HashMap<>();
 
         // 현재 버스의 위치 파악하기
         System.out.println("vehId = " + vehId);
-        String result = getFullUri("http://ws.bus.go.kr/api/rest/buspos/getBusPosByVehId", "vehId", vehId);
+        String vehIdUrl = getFullUri("http://ws.bus.go.kr/api/rest/buspos/getBusPosByVehId", "vehId", vehId);
 
-        HashMap<String, Object> itemList = getItemFromXML(result);
+        HashMap<String, Object> itemList = getItemFromXML(vehIdUrl);
         int nowStOrd = Integer.parseInt(itemList.get("stOrd").toString());
 
+        // RouteId 를 이용해 노선 가져오기
+        String busRouteIdUrl = getFullUri("http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll", "busRouteId", busRouteId);
+        List routeList = getItemListFromXML(busRouteIdUrl);
+
+        String before;
+        if (nowStOrd == 1) {
+            before = "이전 정류장이 없습니다.";
+        } else {
+            before = ((HashMap<String, Object>) routeList.get(nowStOrd - 1)).get("stNm").toString();
+        }
+        result.put("before", before);
+
+        String now = ((HashMap<String, Object>) routeList.get(nowStOrd)).get("stNm").toString();
+        result.put("now", now);
+
+        String next;
+        if (nowStOrd == routeList.size()) {
+            next = "다음 정류장이 없습니다.";
+        } else {
+            next = ((HashMap<String, Object>) routeList.get(nowStOrd + 1)).get("stNm").toString();
+        }
+        result.put("next", next);
 
         // 이 버스에 기다리는 승객 가져오기
         List<Waiting> waitingByVehId = waitingService.findWaitingByVehId(vehId);
 
+        Boolean isPresent = Boolean.FALSE;
         for (Waiting waiting : waitingByVehId) {
-            if (waiting.getStaOrd() == nowStOrd - 1) {
-
+            if (waiting.getStaOrd() == nowStOrd + 1) {
+                isPresent = Boolean.TRUE;
             }
         }
-        return false;
+        result.put("isPresent", isPresent);
+
+        return ResponseEntity.ok(result);
     }
 }
