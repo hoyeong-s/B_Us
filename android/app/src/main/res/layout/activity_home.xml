@@ -32,6 +32,14 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="60px" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button"
+            android:onClick="move"/>
     </LinearLayout>
 
     <Button

@@ -2,6 +2,7 @@ package ssafy.third.bus;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import ssafy.third.bus.ble.MainActivity;
 import ssafy.third.bus.function.STT;
 import ssafy.third.bus.function.TTS;
 
@@ -65,6 +67,11 @@ public class Home extends AppCompatActivity {
 
     public static Context getAppContext(){
         return Home.context;
+    }
+
+    public void move(View v) {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
 }
