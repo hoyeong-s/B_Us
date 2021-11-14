@@ -15,15 +15,14 @@ import android.view.View;
 public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private Drawable mDivider;
-    private int mDividerHeight = 2;//分割线高度，默认为2px
-    private int mOrientation;//列表的方向：LinearLayoutManager.VERTICAL或LinearLayoutManager.HORIZONTAL
+    private int mDividerHeight = 2;
+    private int mOrientation;
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
 
     /**
-     * 默认分割线：高度为2px，颜色为灰色
      *
      * @param context
-     * @param orientation 列表方向
+     * @param orientation
      */
     public RecycleViewDivider(Context context, int orientation) {
         if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager
@@ -38,11 +37,9 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 自定义分割线
-     *
      * @param context
-     * @param orientation 列表方向
-     * @param drawableId  分割线图片，高度默认为图片原始高度
+     * @param orientation
+     * @param drawableId
      */
     public RecycleViewDivider(Context context, int orientation, int drawableId) {
         this(context, orientation);
@@ -51,11 +48,9 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 自定义分割线
-     *
      * @param context
-     * @param orientation 列表方向
-     * @param drawable    分割线图片，高度默认为图片原始高度
+     * @param orientation
+     * @param drawable
      */
     public RecycleViewDivider(Context context, int orientation, Drawable drawable) {
         this(context, orientation);
@@ -64,12 +59,10 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 自定义分割线
-     *
      * @param context
-     * @param orientation 列表方向
-     * @param drawable    分割线图片
-     * @param drawableHeight    分割线图片高度
+     * @param orientation
+     * @param drawable
+     * @param drawableHeight
      */
     public RecycleViewDivider(Context context, int orientation, Drawable drawable, int
             drawableHeight) {
@@ -79,12 +72,10 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     }
 
     /**
-     * 自定义分割线
-     *
      * @param context
-     * @param orientation   列表方向
-     * @param dividerHeight 分割线高度
-     * @param dividerColor  分割线颜色
+     * @param orientation
+     * @param dividerHeight
+     * @param dividerColor
      */
     public RecycleViewDivider(Context context, int orientation, int dividerHeight, int
             dividerColor) {
@@ -96,7 +87,6 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     }
 
 
-    //获取分割线尺寸
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
             state) {
@@ -104,7 +94,6 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         outRect.set(0, 0, 0, mDividerHeight);
     }
 
-    //绘制分割线
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);
@@ -115,7 +104,6 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    //绘制横向 item 分割线
     private void drawHorizontal(Canvas canvas, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getMeasuredWidth() - parent.getPaddingRight();
@@ -136,7 +124,6 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    //绘制纵向 item 分割线
     private void drawVertical(Canvas canvas, RecyclerView parent) {
         final int top = parent.getPaddingTop();
         final int bottom = parent.getMeasuredHeight() - parent.getPaddingBottom();

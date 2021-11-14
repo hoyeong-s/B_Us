@@ -22,6 +22,8 @@ import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
+
+import ssafy.third.bus.Home;
 import ssafy.third.bus.R;
 
 import java.util.Collections;
@@ -192,16 +194,21 @@ public class MainActivity extends AppCompatActivity {
 
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             /**
+             * 비콘이 감지되었을 때
              *   if the manager find some new beacon, it will call back this method.
              *
              *  @param minewBeacons  new beacons the manager scanned
              */
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
-
+                Toast.makeText(getApplicationContext(), "비콘감지", Toast.LENGTH_SHORT).show();
+//                Intent mIntent = new Intent(getApplicationContext(), Home.class);
+//                mIntent.putExtra("EXTRA_SESSION_ID", 21101);
+//                startActivity(mIntent);
             }
 
             /**
+             * 비콘이 사라졌을 때
              *  if a beacon didn't update data in 10 seconds, we think this beacon is out of rang, the manager will call back this method.
              *
              *  @param minewBeacons beacons out of range
