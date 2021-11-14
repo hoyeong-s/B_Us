@@ -35,12 +35,17 @@ public class OdsayController {
         itemList.stream().forEach(li -> System.out.println("li = " + li));
     }
 
-    @ApiOperation(value = "정류장에 오는 모든 버스를 조회하는 함수입니다. 추가로 시간을 반환해줍니다. 인자는 stationId 입니다")
+    @ApiOperation(value = "정류장의 이름과, 오는 모든 버스를 조회하는 함수입니다. 추가로 시간을 반환해줍니다. 인자는 stationId 입니다")
     @RequestMapping(value = "/busInfo/{arsId}", method = RequestMethod.GET)
-    public ResponseEntity<List<BusResponseDto>> getBusInfo(@PathVariable int arsId) throws IOException {
+    public ResponseEntity getBusInfo(@PathVariable int arsId) throws IOException {
         String result = getFullUri("http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid", "arsId",arsId);
         List<Map> itemList = getItemListFromXML(result);
         System.out.println("itemList = " + itemList);
+
+        Map<String, Object> returnMap = new HashMap<>();
+
+        String stNm = (String) itemList.get(0).get("stNm");
+        returnMap.put("stationName", stNm);
 
         List<BusResponseDto> busResponseDtos = new ArrayList<>();
         itemList.stream().forEach(
@@ -55,6 +60,7 @@ public class OdsayController {
                     busResponseDtos.add(dto);
                 }
         );
+
         busResponseDtos.sort(new Comparator<BusResponseDto>() {
             @Override
             public int compare(BusResponseDto o1, BusResponseDto o2) {
@@ -68,7 +74,9 @@ public class OdsayController {
                 else return -1;
             }
         });
-        return ResponseEntity.ok(busResponseDtos);
+        returnMap.put("itemList", busResponseDtos);
+
+        return ResponseEntity.ok(returnMap);
     }
 
 
