@@ -35,7 +35,8 @@ public class BusList_Adapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((myViewHolder)holder).btn.setText(myModelList.get(position));
+        String line = myModelList.get(position);
+        ((myViewHolder)holder).btn.setText(line);
     }
 
 
@@ -62,7 +63,7 @@ public class BusList_Adapter extends RecyclerView.Adapter {
 
                         //TODO
                         // DB에 버스 추가
-                        tts.speakOut(b.getText().toString()+" 버스 등록을 완료했습니다 ");
+                        tts.speakOut(b.getText().toString().split("   ")[0]+" 버스 등록을 완료했습니다 ");
                         if (position != RecyclerView.NO_POSITION){
                             mOnBtnClickListener.onBtnClick();
                         }
