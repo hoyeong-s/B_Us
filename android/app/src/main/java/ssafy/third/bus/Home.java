@@ -10,15 +10,9 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+
 
 import ssafy.third.bus.function.Command;
 import ssafy.third.bus.function.STT;
@@ -34,7 +28,9 @@ public class Home extends AppCompatActivity {
     private Button register;
     private Button register_speak;
     private Button alarm;
-    private TextView station;
+    private TextView station_text;
+    public static String station_name = "";
+    public static String arsId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +39,18 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         tts = new TTS();
-        station = findViewById(R.id.station);
+        station_text = findViewById(R.id.station_text);
         register = findViewById(R.id.register);
         register_speak = findViewById(R.id.register_speak);
         alarm = findViewById(R.id.alarm);
+        station_info = findViewById(R.id.station_info);
         command = new Command(mainActivity);
+
+        if(station_name.length()==0){
+            station_text.setText("버스 정류장 정보가 없습니다");
+        }else{
+            station_text.setText("현재 정류장은 "+station_name+"입니다");
+        }
 
         final int PERMISSION = 1;
         if ( Build.VERSION.SDK_INT >= 23 ){
@@ -55,30 +58,39 @@ public class Home extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
                     Manifest.permission.RECORD_AUDIO},PERMISSION);
         }
-        //TODO
-        //***********************************************
-        String s = "사당역"; // API로 역 정보 받아와야함 *****
-        //***********************************************
-
-        station.setText(s+"입니다.");
-        station_info = findViewById(R.id.station_info);
 
         //정류장 정보 버튼
         station_info.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO
-                //*********************************************************
-                String station_api = "현재 정류장은 사당역이며, 인천 방향입니다. 정류장 번호는 1111입니다.";
-                //*********************************************************
+                // 비콘에서 arsId 가져와야함
+                arsId = "21028";
+
+                try{
+                    URLConnector connector = new URLConnector();
+                    String result = connector.execute(arsId).get();
+                    String [] arr = result.split(",");
+                    station_name = arr[0].split("\"")[3];
+                }catch (Exception e){
+                }
+
+                station_text.setText("현재 정류장은 "+station_name+"입니다"); // 상단 현재 정류장 정보
+
+                String station_api = "현재 정류장은 "+station_name+"이며, 정류장 번호는 "+arsId.charAt(0)+" "+arsId.charAt(1)+" 다시 "+arsId.charAt(2)+" "+arsId.charAt(3)+" "+arsId.charAt(4)+" 입니다"; // TTS로 정보 읽어줌
                 tts.speakOut(station_api);
+
             }
         });
 
         // 버스 목록 버튼
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getAppContext(),BusList.class);
-                startActivity(intent);
+                if(arsId.length()!=0) {
+                    Intent intent = new Intent(getAppContext(), BusList.class);
+                    startActivity(intent);
+                }else{
+                    tts.speakOut("현재 버스 정류장이 아닙니다 등록 후 이용해주세요");
+                }
             }
         });
 
@@ -87,13 +99,17 @@ public class Home extends AppCompatActivity {
         register_speak.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                tts.speakOut("탑승하실 버스를 말해주세요");
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        command.getCommand();
-                    }
-                },3000);
+                if(arsId.length()!=0) {
+                    tts.speakOut("탑승하실 버스를 말해주세요");
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            command.getCommand();
+                        }
+                    },3000);
+                }else{
+                    tts.speakOut("현재 버스 정류장이 아닙니다 등록 후 이용해주세요");
+                }
             }
         });
 
@@ -102,6 +118,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getAppContext(),Alarm.class);
                 startActivity(intent);
+
             }
         });
     }
