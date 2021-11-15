@@ -2,12 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ssafy.third.bus">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <queries>
+        <package android:name="com.google.android.googlequicksearchbox"/>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -17,18 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bus">
         <activity
-            android:name=".ble.MainActivity"
-            android:label="MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".Home"
             android:exported="true">
-            <intent-filter>
+            <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
                    </activity>
+        <activity android:name=".BusList"
+            android:label="전체 버스 조회 및 등록 페이지입니다    등록하시려면 아래 버튼을 선택해 주세요"/>
+        <activity android:name=".Alarm"
+            android:label="등록 버스 조회 및 수정 페이지입니다    삭제하시려면 아래 버튼을 선택해 주세요"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />

@@ -10,10 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_gravity="center"
+        android:focusable="true"
         >
         <TextView
             android:id="@+id/station_text"
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:text="현재 버스 정류장은 "
             android:textSize="60px"
+            android:focusable="false"
             />
 
         <TextView
@@ -31,15 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="60px" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button"
-            android:onClick="move"/>
+            android:textSize="60px"
+            android:focusable="false"/>
     </LinearLayout>
 
     <Button
@@ -67,6 +62,15 @@
         android:layout_weight="3"
         android:layout_marginTop="5dp"
         android:text="음성으로 버스 조회 및 등록"
+        android:textSize="70px"/>
+
+    <Button
+        android:id="@+id/alarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_marginTop="5dp"
+        android:text="등록 버스 조회 및 수정"
         android:textSize="70px"/>
 
 </LinearLayout>
