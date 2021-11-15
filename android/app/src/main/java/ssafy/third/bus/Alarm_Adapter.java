@@ -1,5 +1,8 @@
 package ssafy.third.bus;
 
+import static ssafy.third.bus.Home.android_id;
+import static ssafy.third.bus.Home.arsId;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +38,9 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((myViewHolder)holder).btn.setText(myModelList.get(position));
+        String line = myModelList.get(position);
+        String [] arr = line.split("&");
+        ((myViewHolder)holder).btn.setText(arr[0]+"   "+arr[1]);
     }
 
 
@@ -58,10 +63,17 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (mOnBtnClickListener != null){
                         int position = getAdapterPosition();
-                        Button b = (Button) v;
-                        //TODO
-                        //DB에 버스 삭제
-                        tts.speakOut(b.getText().toString()+" 버스를 삭제했습니다 ");
+
+                        String line = myModelList.get(position);
+                        String [] arr = line.split("&");
+
+                        try{
+                            URLConnector_delete connector = new URLConnector_delete();
+                            connector.execute(android_id,arr[2]).get();
+                        }catch (Exception e){
+                        }
+
+                        tts.speakOut(arr[0]+" 버스를 삭제했습니다 ");
                         if (position != RecyclerView.NO_POSITION){
                             mOnBtnClickListener.onDeleteBtnClick(position);
                         }

@@ -53,7 +53,7 @@ public class Home extends AppCompatActivity {
         station_info = findViewById(R.id.station_info);
         command = new Command(mainActivity);
 
-        if(station_name.length()==0){
+        if(station_name.equals("")){
             station_text.setText("버스 정류장 정보가 없습니다");
         }else{
             station_text.setText("현재 정류장은 "+station_name+"입니다");
@@ -66,6 +66,8 @@ public class Home extends AppCompatActivity {
                     Manifest.permission.RECORD_AUDIO},PERMISSION);
         }
 
+        //TODO
+        // 가져올 arsId 가 없으면 분기처리 필요 (버스정류장이 아닙니다.)
         //정류장 정보 버튼
         station_info.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,7 +77,7 @@ public class Home extends AppCompatActivity {
 
                 try{
                     URLConnector connector = new URLConnector();
-                    String result = connector.execute(arsId).get();
+                    String result = connector.execute("1",arsId).get();
                     String [] arr = result.split(",");
                     station_name = arr[0].split("\"")[3];
                 }catch (Exception e){

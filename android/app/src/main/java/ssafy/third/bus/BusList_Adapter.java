@@ -3,18 +3,15 @@ package ssafy.third.bus;
 import static ssafy.third.bus.Home.android_id;
 import static ssafy.third.bus.Home.arsId;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ssafy.third.bus.function.TTS;
@@ -67,11 +64,10 @@ public class BusList_Adapter extends RecyclerView.Adapter {
                         String line = myModelList.get(position);
                         String [] arr = line.split("\":\"|\",\"");
                         Log.d("button",arr[7] + "   " + arr[9]);
-                        //TODO
-                        // DB에 버스 추가
+
                         try{
-                            URLConnector1 connector = new URLConnector1();
-                            connector.execute(android_id,arr[7],arr[9]).get();
+                            URLConnector_post connector = new URLConnector_post();
+                            connector.execute(arsId,arr[1],android_id,arr[7],arr[9]).get();
                         }catch (Exception e){
                         }
                         tts.speakOut(arr[1]+" 버스 등록을 완료했습니다 ");

@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.cert.TrustAnchor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ssafy.bus.common.ManageXML.*;
 
@@ -57,6 +54,7 @@ public class WaitingController {
                             .staOrd(map.get("staOrd").toString())
                             .busNo(map.get("rtNm").toString())
                             .remainingTime(changeRemainingTime(map.get("arrmsgSec1").toString()))
+                            .order(setOrder(changeRemainingTime(map.get("arrmsgSec1").toString())))
                             .busRouteId(map.get("busRouteId").toString())
                             .build();
                     busResponseDtos.add(dto);
@@ -68,8 +66,23 @@ public class WaitingController {
                 }
             }
         }
+
+        busResponseDtos.sort(new Comparator<BusResponseDto>() {
+            @Override
+            public int compare(BusResponseDto o1, BusResponseDto o2) {
+
+                int busOrder1 = o1.getOrder();
+                int busOrder2 = o2.getOrder();
+
+                if (busOrder1 == busOrder2) return 0;
+                else if (busOrder1 > busOrder2) return 1;
+                else return -1;
+            }
+        });
+
         return ResponseEntity.ok(busResponseDtos);
     }
+
 
     @ApiOperation(value = "등록한 차량 번호 삭제, 인자는 승객아이디, 버스번호")
     @RequestMapping(value = "/{clientId}/{busNo}", method = RequestMethod.DELETE)
@@ -78,15 +91,18 @@ public class WaitingController {
         if (waitingByClientIdAndBusNo == null) {
             return;
         }
-
         waitingService.delete(waitingByClientIdAndBusNo);
     }
 
-//    @ApiOperation(value = "차량 고유ID(vehId)를 이용해서 현재 대기중인 승객 모두 가져오기")
-//    @RequestMapping(value = "/vehicle/{vehId}", method = RequestMethod.GET)
-//    public void findWaitingByVehId(@PathVariable int vehId) {
-//        List<Waiting> waitingByVehId = waitingService.findWaitingByVehId(vehId);
-//        System.out.println("waitingByVehId = " + waitingByVehId);
-//    }
 
+    private int setOrder(String arriveTime) {
+        if (arriveTime == "곧 도착") {
+            return 0;
+        } else if (arriveTime == "도착 정보 없음") {
+            return 100;
+        } else {
+            int minute = arriveTime.indexOf("분");
+            return Integer.parseInt(arriveTime.substring(0, minute));
+        }
+    }
 }

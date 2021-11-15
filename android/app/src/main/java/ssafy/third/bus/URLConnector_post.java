@@ -3,6 +3,9 @@ package ssafy.third.bus;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,9 +13,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
-public class URLConnector1 extends AsyncTask<String, Void, String> {
+public class URLConnector_post extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
+    Map<String,Object> map = new HashMap<>();
     @Override
     // doInBackground의 매개변수 값이 여러개일 경우를 위해 배열로
     protected String doInBackground(String... strings) {
@@ -26,8 +33,22 @@ public class URLConnector1 extends AsyncTask<String, Void, String> {
 
              //서버에 보낼 값 포함해 요청함.
             OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
-            sendMsg = "clientId="+strings[0]+"&staOrd="+strings[1]+"&vehId="+strings[2]; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
-            osw.write(sendMsg);                           // OutputStreamWriter에 담아 전송
+//            sendMsg = "arsId"+strings[0]+
+//                    "&busNo"+strings[1]+
+//                    "&clientId="+strings[2]+
+//                    "&staOrd="+strings[3]+
+//                    "&vehId="+strings[4]; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("arsId", strings[0]);
+            jsonObject.accumulate("busNo",  strings[1]);
+            jsonObject.accumulate("clientId",  strings[2]);
+            jsonObject.accumulate("staOrd",  strings[3]);
+            jsonObject.accumulate("vehId",  strings[4]);
+            Log.d("string",strings[4]);
+            receiveMsg = jsonObject.toString();
+
+            osw.write(receiveMsg);                           // OutputStreamWriter에 담아 전송
             osw.flush();
 
             // jsp와 통신이 잘 되고, 서버에서 보낸 값 받음.
@@ -46,6 +67,8 @@ public class URLConnector1 extends AsyncTask<String, Void, String> {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         // 서버에서 보낸 값을 리턴합니다.

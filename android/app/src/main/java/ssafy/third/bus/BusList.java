@@ -38,7 +38,7 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
 
         try {
             URLConnector connector = new URLConnector();
-            String result = connector.execute(arsId).get();
+            String result = connector.execute("1",arsId).get();
             translate(result);
         }catch (Exception e){
 
@@ -105,7 +105,6 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
     }
 
     void show(){
-        Log.d("show","show");
         adapter = new BusList_Adapter(list,this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
