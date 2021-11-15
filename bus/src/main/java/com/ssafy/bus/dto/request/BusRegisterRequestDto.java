@@ -12,13 +12,13 @@ public class BusRegisterRequestDto {
     private String clientId;
 
     @ApiModelProperty(value = "탑승할 버스 고유 번호", example = "208000191")
-    private int vehId;
+    private String vehId;
 
     @ApiModelProperty(value = "버스 정류장의 고유 아이디")
-    private int arsId;
+    private String arsId;
 
     @ApiModelProperty(value = "탑승할 정류장의 순서 staOrd", example = "67")
-    private int staOrd;
+    private String staOrd;
 
     @ApiModelProperty(value = "탑승할 버스의 번호", example = "M5333안양")
     private String busNo;
