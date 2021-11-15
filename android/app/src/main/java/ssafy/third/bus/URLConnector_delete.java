@@ -10,23 +10,20 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class URLConnector extends AsyncTask<String, Void, String> {
+public class URLConnector_delete extends AsyncTask<String, Void, String> {
     String sendMsg, receiveMsg;
     @Override
     // doInBackground의 매개변수 값이 여러개일 경우를 위해 배열로
     protected String doInBackground(String... strings) {
         try {
+            Log.d("delete",strings[0]);
+            Log.d("delete1",strings[1]);
             String str = "http://k5a504.p.ssafy.io:8080/api/";
-            if(strings[0].equals("1")){ // 버스 목록 조회
-                str += "busInfo/"+strings[1];
-            }
-            else if(strings[0].equals("2")){ // 등록 버스 목록 조회
-                str += "waiting/client/"+strings[1];
-            }
+            str += "waiting/"+strings[0]+"/"+strings[1];
             URL url = new URL(str);  // 어떤 서버에 요청할지(localhost 안됨.)
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("DELETE");
             conn.connect();
 
             // jsp와 통신이 잘 되고, 서버에서 보낸 값 받음.

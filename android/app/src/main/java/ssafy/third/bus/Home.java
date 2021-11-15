@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,12 +33,17 @@ public class Home extends AppCompatActivity {
     private TextView station_text;
     public static String station_name = "";
     public static String arsId = "";
+    public static String android_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Home.context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // 안드로이드 기기 id
+        android_id = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         tts = new TTS();
         station_text = findViewById(R.id.station_text);
@@ -46,7 +53,7 @@ public class Home extends AppCompatActivity {
         station_info = findViewById(R.id.station_info);
         command = new Command(mainActivity);
 
-        if(station_name.length()==0){
+        if(station_name.equals("")){
             station_text.setText("버스 정류장 정보가 없습니다");
         }else{
             station_text.setText("현재 정류장은 "+station_name+"입니다");
@@ -59,6 +66,8 @@ public class Home extends AppCompatActivity {
                     Manifest.permission.RECORD_AUDIO},PERMISSION);
         }
 
+        //TODO
+        // 가져올 arsId 가 없으면 분기처리 필요 (버스정류장이 아닙니다.)
         //정류장 정보 버튼
         station_info.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -68,7 +77,7 @@ public class Home extends AppCompatActivity {
 
                 try{
                     URLConnector connector = new URLConnector();
-                    String result = connector.execute(arsId).get();
+                    String result = connector.execute("1",arsId).get();
                     String [] arr = result.split(",");
                     station_name = arr[0].split("\"")[3];
                 }catch (Exception e){

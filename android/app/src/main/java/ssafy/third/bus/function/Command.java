@@ -1,5 +1,8 @@
 package ssafy.third.bus.function;
 
+import static ssafy.third.bus.Home.android_id;
+import static ssafy.third.bus.Home.arsId;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
@@ -7,12 +10,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 
 import ssafy.third.bus.Home;
+import ssafy.third.bus.URLConnector;
+import ssafy.third.bus.URLConnector_post;
 
 public class Command {
     private STT stt;
@@ -22,6 +28,10 @@ public class Command {
     int cnt = 0;
     String bus_num = "";
     Handler handler = new Handler();
+    static String time;
+    static String vehId;
+    static String staOrd;
+    static Boolean check,checkt;
 
     public static OnEndListeningListener onEndListeningListener = null;
 
@@ -67,24 +77,44 @@ public class Command {
             },3000);
         }
         if (command.contains("어") || command.contains("그래") || command.contains("네")) {
+            try {
+                URLConnector connector = new URLConnector();
+                String result = connector.execute("1",arsId).get();
+                check = translate(result);
+            }catch (Exception e){
+
+            }
             if(cnt==1) {
-                //TODO
-                //API로 버스 시간 받아오기
-                tts.speakOut(bus_num+"번 버스는 5분 후에 도착합니다"+bus_num+"번 버스를 등록할까요?");
-                cnt = 2;
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        getCommand();
+                if(check) { // 정류장에 해당 버스가 오는 경우
+                    //TODO
+                    //API로 버스 시간 받아오기
+                    if(!checkt)tts.speakOut(bus_num + "번 버스는 "+time+"분 후에 도착합니다" + bus_num + "번 버스를 등록할까요?");
+                    else { // 버스는 오나 운행 종료된 경우
+                        tts.speakOut(bus_num + "번 버스는 도착 정보가 없습니다 버튼을 다시 눌러 등록해주세요");
+                        bus_num = "";
+                        cnt = 0;
+                        return;
                     }
-                }, 6500);
-                //TODO
-                //버스가 오지 않는 경우
-                //해당 버스는 현재 버스정류장에 오지 않습니다 버스 번호를 다시 말해주세요
+                    cnt = 2;
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getCommand();
+                        }
+                    }, 6500);
+                }else{ // 정류장에 버스가 오지 않는 경우
+                    tts.speakOut(bus_num + "번 버스는 현 정류장에 오지 않습니다 버튼을 다시 눌러 등록해주세요");
+                    bus_num = "";
+                    cnt = 0;
+                }
             }
             else if(cnt==2){
-                //TODO
-                //버스 등록 메소드
+                try{
+                    URLConnector_post connector = new URLConnector_post();
+                    connector.execute(arsId,time,android_id,staOrd,vehId).get();
+                }catch (Exception e){
+                }
+
                 tts.speakOut(bus_num+"번 버스를 등록하였습니다");
                 cnt = 0;
             }
@@ -95,4 +125,21 @@ public class Command {
             cnt = 0;
         }
    }
+    Boolean translate(String result){
+        String str = result.split("\"itemList\":")[1];
+        StringTokenizer st = new StringTokenizer(str,"{");
+        st.nextToken();
+        while(st.hasMoreTokens()){
+            String line = st.nextToken();
+            String [] arr = line.split("\":\"|\",\"");
+            if(arr[1].equals(bus_num)){
+                time = arr[3];
+                staOrd = arr[7];
+                vehId = arr[9];
+                if(time.equals("도착 정보 없음"))  checkt = true;
+                return true; // 정류장에 해당 버스가 오는 경우
+            }
+        }
+        return false; // 오지 않는 경우
+    }
 }
