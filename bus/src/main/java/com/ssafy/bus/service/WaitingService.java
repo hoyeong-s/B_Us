@@ -21,6 +21,11 @@ public class WaitingService {
     }
 
     public void register(BusRegisterRequestDto dto) {
+        // 중복처리
+        Waiting exist = waitingRepository.findByClientIdAndVehId(dto.getClientId(), Integer.parseInt(String.valueOf(dto.getVehId())));
+        if (exist != null) {
+            return;
+        }
         Waiting waiting = Waiting.builder()
                 .clientId(dto.getClientId())
                 .staOrd(dto.getStaOrd())
