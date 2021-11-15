@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,12 +33,17 @@ public class Home extends AppCompatActivity {
     private TextView station_text;
     public static String station_name = "";
     public static String arsId = "";
+    public static String android_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Home.context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // 안드로이드 기기 id
+        android_id = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
 
         tts = new TTS();
         station_text = findViewById(R.id.station_text);

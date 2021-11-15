@@ -68,13 +68,8 @@ public class WaitingController {
                 }
             }
         }
-
         return ResponseEntity.ok(busResponseDtos);
     }
-
-
-
-
 
     @ApiOperation(value = "등록한 차량 번호 삭제, 인자는 승객아이디, 버스번호")
     @RequestMapping(value = "/{clientId}/{busNo}", method = RequestMethod.DELETE)
