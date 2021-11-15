@@ -23,10 +23,10 @@ public class WaitingService {
     public void register(BusRegisterRequestDto dto) {
         Waiting waiting = Waiting.builder()
                 .clientId(dto.getClientId())
-                .staOrd(dto.getStaOrd())
-                .vehId(dto.getVehId())
+                .staOrd(Integer.parseInt(dto.getStaOrd()))
+                .vehId(Integer.parseInt(dto.getVehId()))
                 .busNo(dto.getBusNo())
-                .arsId(dto.getArsId())
+                .arsId(Integer.parseInt(dto.getArsId()))
                 .build();
         waitingRepository.save(waiting);
     }
