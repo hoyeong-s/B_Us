@@ -1,5 +1,7 @@
 package ssafy.third.bus;
 
+import static ssafy.third.bus.Home.android_id;
+import static ssafy.third.bus.Home.arsId;
 import static ssafy.third.bus.Home.getAppContext;
 
 import android.content.Intent;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import ssafy.third.bus.function.TTS;
 
@@ -33,23 +36,25 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-
+        recyclerView = findViewById(R.id.recyclerView);
+        emptyView = findViewById(R.id.empty_view);
+        fab = findViewById(R.id.fab);
         list = new ArrayList<>();
-        list.add("100번");
-        list.add("101번");
-        list.add("100번");
-        list.add("101번");
-        list.add("100번");
 
+        try {
+            URLConnector connector = new URLConnector();
+            String result = connector.execute("2",android_id).get();
+            Log.d("alarm",result);
+            translate(result);
+        }catch (Exception e){
+
+        }
 
         adapter = new Alarm_Adapter(list,this);
 
-        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setAdapter(adapter);
-        emptyView = findViewById(R.id.empty_view);
-        fab = findViewById(R.id.fab);
+
 
         onchanged();
 
@@ -86,5 +91,10 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
             }
         },2000);
 
+    }
+
+    void translate(String result){
+        String [] arr = result.split("\":\"|\",\"");
+        list.add(arr[1]+"&"+arr[3]+"&"+arr[9]);
     }
 }
