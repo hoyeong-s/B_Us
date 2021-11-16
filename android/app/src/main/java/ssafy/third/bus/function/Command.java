@@ -31,7 +31,7 @@ public class Command {
     static String time;
     static String vehId;
     static String staOrd;
-    static Boolean check,checkt;
+    static Boolean check,checkt = false;
 
     public static OnEndListeningListener onEndListeningListener = null;
 
@@ -86,13 +86,14 @@ public class Command {
             }
             if(cnt==1) {
                 if(check) { // 정류장에 해당 버스가 오는 경우
-                    //TODO
-                    //API로 버스 시간 받아오기
-                    if(!checkt)tts.speakOut(bus_num + "번 버스는 "+time+"분 후에 도착합니다" + bus_num + "번 버스를 등록할까요?");
+                    if(!checkt)
+                        tts.speakOut(bus_num + "번 버스는 "+time+" 예정 입니다" + bus_num + "번 버스를 등록할까요?");
+
                     else { // 버스는 오나 운행 종료된 경우
                         tts.speakOut(bus_num + "번 버스는 도착 정보가 없습니다 버튼을 다시 눌러 등록해주세요");
                         bus_num = "";
                         cnt = 0;
+                        checkt = false;
                         return;
                     }
                     cnt = 2;
@@ -111,7 +112,7 @@ public class Command {
             else if(cnt==2){
                 try{
                     URLConnector_post connector = new URLConnector_post();
-                    connector.execute(arsId,time,android_id,staOrd,vehId).get();
+                    connector.execute(arsId,bus_num,android_id,staOrd,vehId).get();
                 }catch (Exception e){
                 }
 

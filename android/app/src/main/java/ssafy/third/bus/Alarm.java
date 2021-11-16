@@ -7,6 +7,7 @@ import static ssafy.third.bus.Home.getAppContext;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ssafy.third.bus.function.TTS;
 
@@ -43,10 +46,9 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
 
         try {
             URLConnector connector = new URLConnector();
-            String result = connector.execute("2",android_id).get();
-            Log.d("alarm",result);
+            String result = connector.execute("2", android_id).get();
             translate(result);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -54,7 +56,6 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
 
         onchanged();
 
@@ -65,6 +66,24 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
                 tts.speakOut("메인페이지로 이동합니다");
             }
         });
+
+        final Timer timer = new Timer();
+        final TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    URLConnector connector = new URLConnector();
+                    String result = connector.execute("2", android_id).get();
+                    list.clear();
+                    translate(result);
+                } catch (Exception e) {
+
+                }
+                Message msg = handler.obtainMessage();
+                handler.sendMessage(msg);
+            }
+        };
+        timer.schedule(task, 0, 10000);
     }
 
     public void onchanged() {
@@ -94,7 +113,16 @@ public class Alarm extends AppCompatActivity implements Alarm_Adapter.OnBtnClick
     }
 
     void translate(String result){
-        String [] arr = result.split("\":\"|\",\"");
-        list.add(arr[1]+"&"+arr[3]+"&"+arr[9]);
+        StringTokenizer st = new StringTokenizer(result,"}|]");
+        while(st.hasMoreTokens()){
+            list.add(st.nextToken());
+        }
     }
+
+    final Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+            adapter.updateList(list);
+        }
+    };
+
 }
