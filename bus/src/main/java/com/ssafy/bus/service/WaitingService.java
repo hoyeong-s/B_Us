@@ -22,7 +22,7 @@ public class WaitingService {
 
     public void register(BusRegisterRequestDto dto) {
         // 중복처리
-        Waiting exist = waitingRepository.findByClientIdAndVehId(dto.getClientId(), Integer.parseInt(String.valueOf(dto.getVehId())));
+        Waiting exist = waitingRepository.findByClientIdAndBusNo(dto.getClientId(), dto.getBusNo());
         if (exist != null) {
             return;
         }
