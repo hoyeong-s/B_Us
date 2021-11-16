@@ -45,7 +45,7 @@ public class URLConnector_post extends AsyncTask<String, Void, String> {
             jsonObject.accumulate("clientId",  strings[2]);
             jsonObject.accumulate("staOrd",  strings[3]);
             jsonObject.accumulate("vehId",  strings[4]);
-            Log.d("string",strings[4]);
+            Log.d("string",jsonObject.toString());
             receiveMsg = jsonObject.toString();
 
             osw.write(receiveMsg);                           // OutputStreamWriter에 담아 전송
