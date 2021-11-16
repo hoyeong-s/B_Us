@@ -39,8 +39,8 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         String line = myModelList.get(position);
-        String [] arr = line.split("&");
-        ((myViewHolder)holder).btn.setText(arr[0]+"   "+arr[1]);
+        String [] arr = line.split("\":\"|\",\"");
+        ((myViewHolder)holder).btn.setText(arr[1]+"   "+arr[3]);
     }
 
 
@@ -65,15 +65,15 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
                         int position = getAdapterPosition();
 
                         String line = myModelList.get(position);
-                        String [] arr = line.split("&");
+                        String [] arr = line.split("\":\"|\",\"");
 
                         try{
                             URLConnector_delete connector = new URLConnector_delete();
-                            connector.execute(android_id,arr[2]).get();
+                            connector.execute(android_id,arr[1]).get();
                         }catch (Exception e){
                         }
 
-                        tts.speakOut(arr[0]+" 버스를 삭제했습니다 ");
+                        tts.speakOut(arr[1]+" 버스를 삭제했습니다 ");
                         if (position != RecyclerView.NO_POSITION){
                             mOnBtnClickListener.onDeleteBtnClick(position);
                         }
@@ -86,6 +86,11 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
         public void onClick(View v) {
 
         }
+    }
+
+    public void updateList(List<String> myModelList) {
+        this.myModelList = myModelList;
+        notifyDataSetChanged();
     }
 
     public interface OnBtnClickListener{
