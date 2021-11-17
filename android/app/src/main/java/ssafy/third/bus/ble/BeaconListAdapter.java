@@ -53,6 +53,7 @@ public class BeaconListAdapter extends RecyclerView.Adapter<BeaconListAdapter.My
         int preSize = 0;
         if (this.mMinewBeacons != null) {
             preSize = this.mMinewBeacons.size();
+
         }
         if (preSize > 0) {
             this.mMinewBeacons.clear();

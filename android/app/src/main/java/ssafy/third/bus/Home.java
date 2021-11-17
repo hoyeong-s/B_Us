@@ -7,14 +7,27 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
+import com.minew.beacon.MinewBeaconValue;
+
+import java.util.List;
 
 import ssafy.third.bus.function.Command;
 import ssafy.third.bus.function.STT;
@@ -35,11 +48,59 @@ public class Home extends AppCompatActivity {
     public static String arsId = "";
     public static String android_id;
 
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Home.context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // BLE
+        MinewBeaconManager mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> list) {
+                list.stream().forEach(minewBeacon -> Log.d("minewBeacon = ", String.valueOf(minewBeacon)));
+
+                MinewBeacon minewBeacon = list.get(0);
+                Log.d("minewBeacon", String.valueOf(minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major)));
+                MinewBeaconValue beaconMajor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major);
+                String major = beaconMajor.getStringValue();
+
+                if (Integer.parseInt(major) == 65432) {
+                    MinewBeaconValue beaconMinor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor);
+                    String minor = beaconMinor.getStringValue();
+                    Log.d("minor", minor);
+
+                }
+            }
+
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+                for (MinewBeacon minewBeacon : minewBeacons) {
+                    String deviceName =
+                            minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Name).getStringValue();
+                    Toast.makeText(getApplicationContext(), deviceName + " out range",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> list) {
+            }
+
+            @Override
+            public void onUpdateState(BluetoothState bluetoothState) {
+
+            }
+        });
+
 
         // 안드로이드 기기 id
         android_id = Settings.Secure.getString(context.getContentResolver(),
@@ -71,6 +132,11 @@ public class Home extends AppCompatActivity {
         //정류장 정보 버튼
         station_info.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+
+                mMinewBeaconManager.startScan();
+                Log.d("startScan", "startScan");
+
                 //TODO
                 // 비콘에서 arsId 가져와야함
                 arsId = "21028";
