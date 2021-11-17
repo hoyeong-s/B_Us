@@ -42,4 +42,10 @@ dependencies {
         exclude group: 'com.github.shineware', module: 'commons'
         exclude group: 'com.github.shineware', module: 'aho-corasick'
     }
+
+    // BLE
+    implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    implementation files('libs/minewBeaconAdmin.jar')
+    implementation files('libs/minewBeaconScan.jar')
+
 }
