@@ -59,6 +59,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
         // BLE
         MinewBeaconManager mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
@@ -76,6 +77,10 @@ public class Home extends AppCompatActivity {
                     MinewBeaconValue beaconMinor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor);
                     String minor = beaconMinor.getStringValue();
                     Log.d("minor", minor);
+
+                    if (arsId != minor) {
+                        arsId = minor;
+                    }
 
                 }
             }
@@ -100,6 +105,8 @@ public class Home extends AppCompatActivity {
 
             }
         });
+        mMinewBeaconManager.startScan();
+
 
 
         // 안드로이드 기기 id
@@ -134,12 +141,20 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                mMinewBeaconManager.startScan();
                 Log.d("startScan", "startScan");
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 //TODO
                 // 비콘에서 arsId 가져와야함
-                arsId = "21028";
+
+                if (arsId.length() == 0) {
+                    return;
+                }
 
                 try{
                     URLConnector connector = new URLConnector();
