@@ -66,7 +66,7 @@ public class Home extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onAppearBeacons(List<MinewBeacon> list) {
-
+                Boolean check = new Boolean(Boolean.FALSE);
 //                MinewBeacon minewBeacon = list.get(0);
 //                Log.d("minewBeacon", String.valueOf(minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major)));
 //                MinewBeaconValue beaconMajor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major);
@@ -81,10 +81,10 @@ public class Home extends AppCompatActivity {
                         Log.d("minor", minor);
                         if (arsId != minor) {
                             arsId = minor;
+                            check = Boolean.TRUE;
                             break;
                         }
                     }
-
                 }
 
 
@@ -92,12 +92,6 @@ public class Home extends AppCompatActivity {
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
-                for (MinewBeacon minewBeacon : minewBeacons) {
-                    String deviceName =
-                            minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Name).getStringValue();
-                    Toast.makeText(getApplicationContext(), deviceName + " out range",
-                            Toast.LENGTH_SHORT).show();
-                }
             }
 
 
@@ -146,6 +140,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
 
 
+//                mMinewBeaconManager.startScan();
                 Log.d("startScan", "startScan");
 
                 try {
@@ -158,11 +153,13 @@ public class Home extends AppCompatActivity {
                 // 비콘에서 arsId 가져와야함
 
                 if (arsId.length() == 0) {
+                    tts.speakOut("현재 정류장 근처가 아닙니다");
                     return;
                 }
 
                 try{
                     URLConnector connector = new URLConnector();
+                    Log.d("arsId", arsId);
                     String result = connector.execute("1",arsId).get();
                     String [] arr = result.split(",");
                     station_name = arr[0].split("\"")[3];
