@@ -1,83 +1,78 @@
-# 시각 장애인들을 위한 버스 도착 안내 서비스
+# B, Us 
 
+> 시각 장애인들을 위한 버스 도착 안내 서비스
 
+![image-20211119065857751](\assets\logo.PNG)
 
-> ### 전반적인 흐름도 ( 시각장애인들이 버스를 탈 때, 어려움을 느끼는 부분들 )
->
-> 1. 버스를 탈 수 있는 정류장 찾아가기
-> 2. **원하는 버스 타기**
-> 3. 내리고자 하는 곳에서 내리기
->
-> 위 3가지 기능 중, 저희는 우선 **2번**에 초점을 맞춰 서비스를 만들어보려고 합니다.
+> Full Stack : [김호영](), [한상진](https://www.notion.so/workan/SangJin-Han-4382e2b83ec94c7580fcb84bb64281ac)
 
 
 
 ---
 
-## 제공하는 서비스  ( "1번 과정은 성공했다고 가정한 후" )
+## :information_desk_person: Introduction
+
+- 기간 
+
+  - 21.10.18 - 21.11.19 ( 5 weeks )
+
+- 목적
+
+  - **시각장애인**을 위한, **버스 음성 안내 서비스**를 제작했습니다.
+
+- 내용
+
+  - **블루투스 비콘 인식**을 통하여, 정류장을 파악하고
+
+    **톡백**과, **음성인식**을 통하여 타고자하는 버스를 등록하고
+
+    버스 기사에게 **알림을 전송**해 상호 작용을 통하여
+
+    **모두가 이용가능한 버스문화**를 만들고자 했습니다.
 
 
 
-### HOME
+## 🕋 Project Architecture
 
-1. 현재 도착한 정류장의 정보 제공
-
-   - 정류장의 고유번호와 어느방향으로 가는 정류장인지에 대한 정보를 제공할 예정
-
-   
-
-2. 모든 버스 번호 조회 및 등록
-
-   - 내가 타고자하는 버스가 있는지 조회하고, 원하는 버스를 클릭을 통하여 등록 ( DB를 어떻게 사용할 것인지 )
-
-   
-
-3. 음성으로 검색하기
-
-   - 버스의 정보가 많을 경우, 모든 버스를 조회하는 것이 아닌, 내가 원하는 버스만 음성으로 검색해 등록
-
-   
-
-4. 설명 페이지
-
-   - 어플리케이션을 이용하는 사용자라면 어느정도의 학습하고자하는 의지를 갖고있는 것으로 판단해
-
-     각 버튼별 주요기능들을 줄글로 적어놓을예정
+<img src="\assets\archi.PNG" alt="image-20211119072618807" style="zoom:50%;" />
 
 
 
-### 등록목록
+## 📚 Tech Stack
 
-- HOME에서 등록한 버스들 ( 내가 타고자하는 버스 ) 에 대한 정보를 확인하고 수정할 수 있는 페이지
+- open API
+  - <img src="https://aleen42.github.io/badges/src/google_plus.svg">  >> <img src="https://img.shields.io/badge/STT-black?style=for-the-badge&logo=JPA&logoColor=white"><img src="https://img.shields.io/badge/TTS-black?style=for-the-badge&logo=JPA&logoColor=white">
+
+- :computer:  __Back-End__
+
+  - Language
+    - <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java &logoColor=black"> 
+  - Framework / Architecture
+    - <img src="https://img.shields.io/badge/Android Studio-6DB33F?style=for-the-badge&logo=Android&logoColor=green"><img src="https://img.shields.io/badge/REST API-0052cc?style=for-the-badge&logo=&logoColor=">
+
+- :house_with_garden: __Common__
+
+  - Co-work
+
+    - <img src="https://img.shields.io/badge/notion-black?style=for-the-badge&logo=notion&logoColor=white"> <img src="https://img.shields.io/badge/jira-0052cc?style=for-the-badge&logo=jira&logoColor=white"> <img src="https://img.shields.io/badge/git-f05032?style=for-the-badge&logo=git&logoColor=white">
+
+  - Cloud, Database
+
+    - <img src="https://img.shields.io/badge/Amazon AWS-{232F3E}?style=for-the-badge&logo=amazonaws&logoColor=white"><img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=black">
 
 
 
-### 알림
 
-- 버스에 부착된 블루투스 비콘을 통하여, 거리를 기반으로 도착했다는 신호를 줌과 동시에,
+## :speaking_head: [Service 소개 UCC](https://youtu.be/zgxnYQ7Kul8) 
 
-  해당 어플리케이션에서 음성으로 사용자에게 안내할 예정
 
-- 하나의 예시로, 시각장애인으로 하여금 버스타는 문화를 바꾸자는 의견도 나옴 
 
-  > 내가 타고자하는 버스가 10m 이내로 왔을 때, 해당 화면이 타고자하는 버스에 번호를 나타내는 화면으로 바뀜(네온사인처럼)
-  >
-  > > 버스정류장에 여러대의 버스가 왔을때, 버스기사님께 타고자하는 의지를 전달할 수 있고,
-  > >
-  > > 버스의 앞문을 잘 찾지 못하는 시각장애인에게 버스기사님이 인지하고 안전하게 탑승할 수 있도록 안정성 측면에서도 도움.
+
 
 
 
 ---
 
-## TODO List 
+## 끝까지 읽어주셔서
 
-:heavy_check_mark: 각 스마트 폰별, 선택했던 데이터들을 DATABASE가 아닌 기기에 저장할 수 있나
-
-:heavy_check_mark: 버스정류장까지 가기위해 보행자 네비게이션 기능필요, 찾아본 TMap, NaverMaps, GoogleMap은 모두 자동차 네비게이션만 지원
-
-:heavy_check_mark: 추가적으로 시간이 있다면 개발할 수 있는 부분들 생각해보기
-
-		1. 노선정보 제공
-		2.  ... 
-
+## 감사합니다. 
