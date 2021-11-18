@@ -67,7 +67,7 @@ public class BusController {
 
         Boolean isPresent = Boolean.FALSE;
         for (Waiting waiting : waitingByVehId) {
-            if (waiting.getStaOrd() == nowStOrd+2) {
+            if (waiting.getStaOrd() == nowStOrd+1) {
                 isPresent = Boolean.TRUE;
             }
         }

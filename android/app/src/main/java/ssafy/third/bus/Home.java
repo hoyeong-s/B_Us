@@ -66,23 +66,28 @@ public class Home extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onAppearBeacons(List<MinewBeacon> list) {
-                list.stream().forEach(minewBeacon -> Log.d("minewBeacon = ", String.valueOf(minewBeacon)));
 
-                MinewBeacon minewBeacon = list.get(0);
-                Log.d("minewBeacon", String.valueOf(minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major)));
-                MinewBeaconValue beaconMajor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major);
-                String major = beaconMajor.getStringValue();
-
-                if (Integer.parseInt(major) == 65432) {
-                    MinewBeaconValue beaconMinor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor);
-                    String minor = beaconMinor.getStringValue();
-                    Log.d("minor", minor);
-
-                    if (arsId != minor) {
-                        arsId = minor;
+//                MinewBeacon minewBeacon = list.get(0);
+//                Log.d("minewBeacon", String.valueOf(minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major)));
+//                MinewBeaconValue beaconMajor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major);
+//                String major = beaconMajor.getStringValue();
+                for (MinewBeacon minewBeacon : list) {
+                    MinewBeaconValue beaconValue = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Major);
+                    String stringMajor = beaconValue.getStringValue();
+                    int major = Integer.parseInt(stringMajor);
+                    if (major == 65432) {
+                        MinewBeaconValue beaconMinor = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor);
+                        String minor = beaconMinor.getStringValue();
+                        Log.d("minor", minor);
+                        if (arsId != minor) {
+                            arsId = minor;
+                            break;
+                        }
                     }
 
                 }
+
+
             }
 
             @Override
