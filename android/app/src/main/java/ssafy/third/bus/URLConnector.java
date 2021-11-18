@@ -17,17 +17,19 @@ public class URLConnector extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... strings) {
         try {
             String str = "http://k5a504.p.ssafy.io:8080/api/";
-            if(strings[0].equals("1")){ // 버스 목록 조회
-                str += "busInfo/"+strings[1];
-            }
-            else if(strings[0].equals("2")){ // 등록 버스 목록 조회
-                str += "waiting/client/"+strings[1];
-            }
+            str += "busInfo/"+strings[0];
             URL url = new URL(str);  // 어떤 서버에 요청할지(localhost 안됨.)
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("GET");                              //데이터를 GET 방식으로 전송합니다.
+            //conn.setDoOutput(true);
             conn.connect();
+
+            // 서버에 보낼 값 포함해 요청함.
+//                OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream());
+//                sendMsg = "busInfo/21028"; // GET방식으로 작성해 POST로 보냄 ex) "id=admin&pwd=1234";
+//                osw.write("");                           // OutputStreamWriter에 담아 전송
+//                osw.flush();
 
             // jsp와 통신이 잘 되고, 서버에서 보낸 값 받음.
             if(conn.getResponseCode() == conn.HTTP_OK) {

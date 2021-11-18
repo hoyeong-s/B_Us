@@ -38,7 +38,7 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
 
         try {
             URLConnector connector = new URLConnector();
-            String result = connector.execute("1",arsId).get();
+            String result = connector.execute(arsId).get();
             translate(result);
         }catch (Exception e){
 
@@ -97,14 +97,19 @@ public class BusList extends AppCompatActivity implements BusList_Adapter.OnBtnC
 
     void translate(String result){
         String str = result.split("\"itemList\":")[1];
+        Log.d("str",str);
         StringTokenizer st = new StringTokenizer(str,"{");
         st.nextToken();
         while(st.hasMoreTokens()){
-            list.add(st.nextToken());
+            StringBuilder sb = new StringBuilder();
+            String [] line = st.nextToken().split("\":\"|\",\"");
+            sb.append(line[1] + "   " + line[3]);
+            list.add(sb.toString());
         }
     }
 
     void show(){
+        Log.d("show","show");
         adapter = new BusList_Adapter(list,this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

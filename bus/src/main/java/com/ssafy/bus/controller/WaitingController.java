@@ -48,8 +48,7 @@ public class WaitingController {
         List<BusResponseDto> busResponseDtos = new ArrayList<>();
         for (Map map : itemList) {
             for (Waiting waiting1 : waitingList) {
-                System.out.println("map = " + map.toString());
-                if (map.get("rtNm").toString().equals(waiting1.getBusNo())) {
+                if (map.get("rtNm").equals(waiting1.getBusNo())) {
                     BusResponseDto dto = BusResponseDto.builder()
                             .vehId1(map.get("vehId1").toString())
                             .staOrd(map.get("staOrd").toString())
@@ -97,8 +96,7 @@ public class WaitingController {
 
 
     private int setOrder(String arriveTime) {
-        System.out.println("arriveTime = " + arriveTime);
-        if (arriveTime.equals("곧 도착")) {
+        if (arriveTime == "곧 도착") {
             return 0;
         } else if (arriveTime == "도착 정보 없음") {
             return 100;

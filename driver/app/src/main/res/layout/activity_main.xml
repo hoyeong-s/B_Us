@@ -50,7 +50,7 @@
         android:id="@+id/textView2"
         android:layout_width="99dp"
         android:layout_height="47dp"
-        android:text="11-2안양"
+        android:text="1111"
         android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -77,21 +77,16 @@
         android:layout_width="225dp"
         android:layout_height="94dp"
         android:background="#03A9F4"
-        android:text=""
+        android:text="TextView"
         android:textColor="#3F51B5"
-        android:maxLines="1"
-        android:autoSizeTextType="uniform"
-        android:autoSizeMaxTextSize="40dp"
-        android:autoSizeMinTextSize="20dp"
+        android:textSize="40dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.709"
-        android:textSize="40dp"
         android:gravity="center"/>
-
 
     <TextView
         android:id="@+id/textView5"

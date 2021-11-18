@@ -21,17 +21,12 @@ public class WaitingService {
     }
 
     public void register(BusRegisterRequestDto dto) {
-        // 중복처리
-        Waiting exist = waitingRepository.findByClientIdAndBusNo(dto.getClientId(), dto.getBusNo());
-        if (exist != null) {
-            return;
-        }
         Waiting waiting = Waiting.builder()
                 .clientId(dto.getClientId())
-                .staOrd(Integer.parseInt(dto.getStaOrd()))
-                .vehId(Integer.parseInt(dto.getVehId()))
+                .staOrd(dto.getStaOrd())
+                .vehId(dto.getVehId())
                 .busNo(dto.getBusNo())
-                .arsId(Integer.parseInt(dto.getArsId()))
+                .arsId(dto.getArsId())
                 .build();
         waitingRepository.save(waiting);
     }

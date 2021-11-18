@@ -1,8 +1,5 @@
 package ssafy.third.bus;
 
-import static ssafy.third.bus.Home.android_id;
-import static ssafy.third.bus.Home.arsId;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,9 +35,7 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        String line = myModelList.get(position);
-        String [] arr = line.split("\":\"|\",\"");
-        ((myViewHolder)holder).btn.setText(arr[1]+"   "+arr[3]);
+        ((myViewHolder)holder).btn.setText(myModelList.get(position));
     }
 
 
@@ -63,17 +58,10 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     if (mOnBtnClickListener != null){
                         int position = getAdapterPosition();
-
-                        String line = myModelList.get(position);
-                        String [] arr = line.split("\":\"|\",\"");
-
-                        try{
-                            URLConnector_delete connector = new URLConnector_delete();
-                            connector.execute(android_id,arr[1]).get();
-                        }catch (Exception e){
-                        }
-
-                        tts.speakOut(arr[1]+" 버스를 삭제했습니다 ");
+                        Button b = (Button) v;
+                        //TODO
+                        //DB에 버스 삭제
+                        tts.speakOut(b.getText().toString()+" 버스를 삭제했습니다 ");
                         if (position != RecyclerView.NO_POSITION){
                             mOnBtnClickListener.onDeleteBtnClick(position);
                         }
@@ -86,11 +74,6 @@ public class Alarm_Adapter extends RecyclerView.Adapter {
         public void onClick(View v) {
 
         }
-    }
-
-    public void updateList(List<String> myModelList) {
-        this.myModelList = myModelList;
-        notifyDataSetChanged();
     }
 
     public interface OnBtnClickListener{
