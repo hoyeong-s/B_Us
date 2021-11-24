@@ -2,7 +2,7 @@
 
 > 시각 장애인들을 위한 버스 도착 안내 서비스
 
-![image-20211119065857751](assets\logo.PNG)
+<img src="assets/logo.PNG"/>
 
 > Full Stack : [김호영](), [한상진](https://www.notion.so/workan/SangJin-Han-4382e2b83ec94c7580fcb84bb64281ac)
 
