@@ -33,7 +33,7 @@
 
 
 ## 🕋 Project Architecture
-<img src="assets/archi.PNG" style="zoom:50%;" />
+<img src="assets/Archi.PNG" style="zoom:50%;" />
 
 
 
